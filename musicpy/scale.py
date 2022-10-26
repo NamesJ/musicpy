@@ -4,18 +4,22 @@ import sys
 class Scale:
     name = ''
     steps = []
-    intervals = []
+    _intervals = []
     def __init__(self):
-        self.intervals.append(self.steps[0])
+        self._intervals.append(self.steps[0])
         for idx in range(1, len(self.steps)-1):
-            self.intervals.append(self.intervals[-1]+self.steps[idx])
+            self._intervals.append(self._intervals[-1]+self.steps[idx])
+
+    @property
+    def intervals(self):
+        return self._intervals
 
     def __str__(self):
         return '{} scale: {}'.format(self.name, self.steps)
 
     def __repr__(self):
         return '{} scale:\n  steps: {}\n  intervals: {}'.format(
-                self.name, self.steps, self.intervals)
+                self.name, self.steps, self._intervals)
 
 class Major(Scale):
     name = 'Major'
