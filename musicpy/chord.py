@@ -70,12 +70,12 @@ class Augmented(Chord):
 
 class Major9(Chord):
     intervals = [4, 7, 11, 14]
-    name_suffix = 'ext9'
+    name_suffix = 'maj9'
 
 
 class Minor9(Chord):
     intervals = [3, 7, 10, 14]
-    name_suffix = 'ext11'
+    name_suffix = 'min9'
 
 
 class Dominant9(Chord):
