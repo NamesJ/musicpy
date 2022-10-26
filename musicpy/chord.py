@@ -112,8 +112,22 @@ def __setup():
 __setup()
 
 
+def get_chords_by_intervals(intervals):
+    possible_chords = []
+    num_intervals = len(intervals)
+    for chord in CHORD_CLASSES:
+        # Check if all intervals are contained within the chord
+        matches = sum([interval in chord.intervals for interval in intervals])
+        if matches == num_intervals:
+            possible_chords.append(chord)
+    return possible_chords
+
+
 if __name__ == '__main__':
     print('CHORD_CLASSES: {}'.format(CHORD_CLASSES))
     print('dir(sys.modules[__name__]):')
     print(dir(sys.modules[__name__]))
-    print()
+    print('Get chords by intervals: [4, 10]')
+    print(get_chords_by_intervals([4, 10]))
+    print('Get chords by intervals: [7]')
+    print(get_chords_by_intervals([7]))
