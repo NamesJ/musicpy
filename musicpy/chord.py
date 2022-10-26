@@ -3,16 +3,18 @@ import sys
 from .note import NOTES
 
 class Chord:
-    def __init__(self, name, tonic, intervals):
-        self.name = name
+    intervals = []
+    name_suffix = ''
+    def __init__(self, tonic):
         self.tonic = tonic
-        self.tonic_idx = NOTES.index(self.tonic)
-        self.notes = [self.tonic]
-        self.intervals = intervals
-        for interval in intervals:
-            note_idx = (self.tonic_idx + interval) % len(NOTES)
-            note = NOTES[note_idx]
-            self.notes.append(note)
+        self.name = '{}{}'.format(tonic, self.name_suffix)
+        self.note_indices = []
+        self.notes = []
+        tonic_idx = NOTES.index(self.tonic)
+        for i in self.intervals:
+            note_idx = (tonic_idx + i) % len(NOTES)
+            self.note_indices.append(note_idx)
+            self.notes.append(NOTES[note_idx])
 
     def __add__(self, other):
         return set(self.notes) | set(other.notes)
@@ -22,72 +24,73 @@ class Chord:
 
 
 class Major(Chord):
-    def __init__(self, tonic):
-        super().__init__('{}maj'.format(tonic), tonic, [4, 7])
+    intervals = [4, 7]
+    name_suffix = 'maj'
 
 
 class Minor(Chord):
-    def __init__(self, tonic):
-        super().__init__('{}min'.format(tonic), tonic, [3, 7])
+    intervals = [3, 7]
+    name_suffix = 'min'
 
 
 class Diminished(Chord):
-    def __init__(self, tonic):
-        super().__init__('{}dim'.format(tonic), tonic, [3, 6])
+    intervals = [3, 6]
+    name_suffix = 'dim'
 
 
 class Major7(Chord):
-    def __init__(self, tonic):
-        super().__init__('{}maj7'.format(tonic), tonic, [4, 7, 11])
+    intervals = [4, 7, 11]
+    name_suffix = 'maj7'
 
 
 class Minor7(Chord):
-    def __init__(self, tonic):
-        super().__init__('{}min7'.format(tonic), tonic, [3, 7, 10])
+    intervals = [3, 7, 10]
+    name_suffix = 'min7'
 
 
 class Dominant7(Chord):
-    def __init__(self, tonic):
-        super().__init__('{}dom7'.format(tonic), tonic, [4, 7, 10])
+    intervals = [4, 7, 10]
+    name_suffix = 'dom7'
 
 
 class Suspended2(Chord):
-    def __init__(self, tonic):
-        super().__init__('{}sus2'.format(tonic), tonic, [2, 7])
+    intervals = [2, 7]
+    name_suffix = 'sus2'
 
 
 class Suspended4(Chord):
-    def __init__(self, tonic):
-        super().__init__('{}sus4'.format(tonic), tonic, [5, 7])
+    intervals = [5, 7]
+    name_suffix = 'sus4'
 
 
 class Augmented(Chord):
-    def __init__(self, tonic):
-        super().__init__('{}aug'.format(tonic), tonic, [4, 8])
+    intervals = [4, 8]
+    name_suffix = 'aug'
+
 
 class Major9(Chord):
-    def __init__(self, tonic):
-        super().__init__('{}ext9'.format(tonic), tonic, [4, 7, 11, 14])
+    intervals = [4, 7, 11, 14]
+    name_suffix = 'ext9'
 
 
 class Minor9(Chord):
-    def __init__(self, tonic):
-        super().__init__('{}ext11'.format(tonic), tonic, [3, 7, 10, 14])
+    intervals = [3, 7, 10, 14]
+    name_suffix = 'ext11'
 
 
 class Dominant9(Chord):
-    def __init__(self, tonic):
-        super().__init__('{}dom9'.format(tonic), tonic, [4, 7, 10, 14])
+    intervals = [4, 7, 10, 14]
+    name_suffix = 'dom9'
 
 
 class Major11(Chord):
-    def __init__(self, tonic):
-        super().__init__('{}maj11'.format(tonic), tonic, [4, 7, 11, 14, 17])
+    intervals = [4, 7, 11, 14, 17]
+    name_suffix = 'maj11'
 
 
 class Minor11(Chord):
-    def __init__(self, tonic):
-        super().__init__('{}min11'.format(tonic), tonic, [3, 7, 10, 14, 17])
+    intervals = [3, 7, 10, 14, 17]
+    name_suffix = 'min11'
 
 
 CHORD_CLASSES = {Major, Minor, Diminished, Major7, Minor7, Dominant7,
