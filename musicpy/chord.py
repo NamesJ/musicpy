@@ -93,10 +93,8 @@ class Minor11(Chord):
     name_suffix = 'min11'
 
 
-CHORD_CLASSES = Chord.__subclasses__()
-
-
 def __setup():
+    setattr(sys.modules[__name__], 'CHORD_CLASSES', Chord.__subclasses__())
     chords = {}
     for note in NOTES:
         for ChordClass in CHORD_CLASSES:
