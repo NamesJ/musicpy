@@ -12,6 +12,7 @@ if __name__ == '__main__':
     print(g_major)
     e_minor = Emin
     print(e_minor)
+    print(chord.Amaj)
     print('g_major + e_minor: {}'.format(g_major + e_minor))
     print('Amin + Bmaj: {}'.format(Amin + Bmaj))
 
