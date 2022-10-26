@@ -62,9 +62,10 @@ class Blues(Scale):
 
 
 def __setup():
+    setattr(sys.modules[__name__], 'SCALE_CLASSES', Scale.__subclasses__())
     scales = {}
-    for scale in {Major(), NaturalMinor(), HarmonicMinor(), MelodicMinor(),
-            WholeTone(), MajorPentatonic(), MinorPentatonic(), Blues()}:
+    for ScaleClass in SCALE_CLASSES:
+        scale = ScaleClass()
         scales[scale.name] = scale
     setattr(sys.modules[__name__], 'SCALES', scales)
 
