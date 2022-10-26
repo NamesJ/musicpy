@@ -40,3 +40,11 @@ if __name__ == '__main__':
     print(key.CMelodicMinor)
     print(key.AMinorPentatonic)
     print(key.GBlues)
+
+    print('\nEstimate chords from intervals')
+    print('Chords containing the intervals [4, 7]')
+    chords = chord.get_chords_by_intervals([4, 7])
+    for c in chords:
+        print('{}: {}'.format(c.name_suffix, c.intervals))
+    print('Chords containing the intervals: [7]')
+    print(','.join([c.name_suffix for c in chord.get_chords_by_intervals([7])]))
