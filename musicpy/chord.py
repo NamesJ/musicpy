@@ -2,22 +2,31 @@ import sys
 
 from .note import NOTES
 
-class Chord:
+
+class NoteHolder:
+    def __init__(self, notes):
+        self.notes = notes
+
+    def __add__(self, other):
+        return NoteHolder(list(set(self.notes) | set(other.notes)))
+
+    def __str__(self):
+        return '{}'.format(self.notes)
+
+class Chord(NoteHolder):
     intervals = []
     name_suffix = ''
     def __init__(self, tonic):
         self.tonic = tonic
         self.name = '{}{}'.format(tonic, self.name_suffix)
-        self.note_indices = []
-        self.notes = []
         tonic_idx = NOTES.index(self.tonic)
+        self.note_indices = [tonic_idx]
+        notes = [self.tonic]
         for i in self.intervals:
             note_idx = (tonic_idx + i) % len(NOTES)
             self.note_indices.append(note_idx)
-            self.notes.append(NOTES[note_idx])
-
-    def __add__(self, other):
-        return set(self.notes) | set(other.notes)
+            notes.append(NOTES[note_idx])
+        super().__init__(notes)
 
     def __str__(self):
         return '{}: {}'.format(self.name, self.notes)
@@ -102,8 +111,8 @@ def __setup():
             chords[chord.name] = chord
             # Work around for attribute name where '#' in chord name
             if '#' in chord.name:
-                #'A#/Bbmaj' => 'Az/Bb'
-                alt_name = chord.name.replace('#', 'z')
+                #'A#/Bbmaj' => 'AzBb'
+                alt_name = chord.name.replace('#', 'z').replace('/', '')
                 setattr(sys.modules[__name__], alt_name, chord)
             else:
                 setattr(sys.modules[__name__], chord.name, chord)

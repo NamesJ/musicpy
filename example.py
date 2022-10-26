@@ -29,8 +29,8 @@ if __name__ == '__main__':
 
     print('\nHard Times are Coming Now key estimation:')
     #hard_times_notes = ['B', 'D', 'E', 'G']
-    hard_times_notes = g_major + e_minor
-    estimate_key(hard_times_notes)
+    hard_times_notes = g_major + e_minor # returns a NoteHolder object
+    estimate_key(hard_times_notes.notes)
 
     print('\nScales')
     print(Key('C', scale.MinorPentatonic()))
