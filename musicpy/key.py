@@ -1,7 +1,7 @@
 import sys
 
-from note import NOTES
-from scale import SCALES
+from .note import NOTES
+from .scale import SCALES
 
 
 class Key:
@@ -55,7 +55,6 @@ def estimate_key(notes, min_found=0.8, min_score=0.8):
 def __setup():
     keys = {}
     for root in NOTES:
-        print(SCALES)
         for name, scale in SCALES.items():
             key = Key(root, scale)
             keys[(root, scale.name)] = key

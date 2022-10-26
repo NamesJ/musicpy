@@ -1,6 +1,6 @@
 import sys
 
-from note import NOTES
+from .note import NOTES
 
 class Chord:
     def __init__(self, name, tonic, intervals):
