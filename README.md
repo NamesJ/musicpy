@@ -9,4 +9,4 @@ known_notes = ['G', 'D', 'B', 'E']
 estimate_key(known_notes)
 ```
 
-See example usage in `musicpy/main.py`
+See example usage in `example.py`
