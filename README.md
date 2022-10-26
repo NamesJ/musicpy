@@ -16,4 +16,15 @@ from musicpy.chord import Gmaj, Cmin, Adim
 print(Gmaj + Cmin + Adim)
 ```
 
+## Find all chord qualities (classes) that contain a known set of intervals
+```
+from musicpy.chord import get_chords_by_intervals
+
+intervals = [4, 7] # perfect 3rd, perfect 5th
+chords = get_chords_by_intervals(intervals)
+
+for c in chords:
+    print('{}: {}'.format(c.name_suffix, c.intervals))
+```
+
 See example usage in `example.py`
