@@ -102,7 +102,13 @@ def __setup():
         for ChordClass in CHORD_CLASSES:
             chord = ChordClass(note)
             chords[chord.name] = chord
-            setattr(sys.modules[__name__], chord.name, chord)
+            # Work around for attribute name where '#' in chord name
+            if '#' in chord.name:
+                #'A#/Bbmaj' => 'Az/Bb'
+                alt_name = chord.name.replace('#', 'z')
+                setattr(sys.modules[__name__], alt_name, chord)
+            else:
+                setattr(sys.modules[__name__], chord.name, chord)
     setattr(sys.modules[__name__], 'CHORDS', chords)
 
 __setup()
@@ -112,3 +118,4 @@ if __name__ == '__main__':
     print('CHORD_CLASSES: {}'.format(CHORD_CLASSES))
     print('dir(sys.modules[__name__]):')
     print(dir(sys.modules[__name__]))
+    print()
