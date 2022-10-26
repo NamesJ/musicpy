@@ -93,9 +93,7 @@ class Minor11(Chord):
     name_suffix = 'min11'
 
 
-CHORD_CLASSES = {Major, Minor, Diminished, Major7, Minor7, Dominant7,
-                Suspended2, Suspended4, Augmented, Major9, Dominant9, Major11,
-                Minor11}
+CHORD_CLASSES = Chord.__subclasses__()
 
 
 def __setup():
@@ -108,3 +106,9 @@ def __setup():
     setattr(sys.modules[__name__], 'CHORDS', chords)
 
 __setup()
+
+
+if __name__ == '__main__':
+    print('CHORD_CLASSES: {}'.format(CHORD_CLASSES))
+    print('dir(sys.modules[__name__]):')
+    print(dir(sys.modules[__name__]))
