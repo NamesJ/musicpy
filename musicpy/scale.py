@@ -81,6 +81,8 @@ def __setup():
     for ScaleClass in SCALE_CLASSES:
         scale = ScaleClass()
         scales[scale.name] = scale
+        # Overwrite subclass attribute to be singleton instance instead
+        setattr(sys.modules[__name__], scale.name, scale)
     setattr(sys.modules[__name__], 'SCALES', scales)
 
 
@@ -90,3 +92,4 @@ __setup()
 if __name__ == '__main__':
     for scale in SCALES.values():
         print(repr(scale))
+    print(Blues)
