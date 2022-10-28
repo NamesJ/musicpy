@@ -4,8 +4,6 @@ NOTE_NAMES = ['C', 'CzDb', 'D', 'DzEb', 'E', 'F', 'FzGb', 'G', 'GzAb', 'A', 'AzB
 TUNING_FREQUENCY = 440 # hertz
 ALL_FREQUENCIES = [TUNING_FREQUENCY*2**(n/12) for n in range(-57, 50)]
 
-class Tone:
-    f = 0.0 # frequency (hertz)
 
 class Note:
     name = ''
