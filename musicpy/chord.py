@@ -18,7 +18,7 @@ class Chord(NoteHolder):
     name_suffix = ''
     def __init__(self, tonic):
         self.tonic = tonic
-        self.name = '{}{}'.format(tonic, self.name_suffix)
+        self.name = '{}{}'.format(tonic.name, self.name_suffix)
         tonic_idx = NOTES.index(self.tonic)
         self.note_indices = [tonic_idx]
         notes = [self.tonic]
@@ -109,13 +109,7 @@ def __setup():
         for ChordClass in CHORD_CLASSES:
             chord = ChordClass(note)
             chords[chord.name] = chord
-            # Work around for attribute name where '#' in chord name
-            if '#' in chord.name:
-                #'A#/Bbmaj' => 'AzBb'
-                alt_name = chord.name.replace('#', 'z').replace('/', '')
-                setattr(sys.modules[__name__], alt_name, chord)
-            else:
-                setattr(sys.modules[__name__], chord.name, chord)
+            setattr(sys.modules[__name__], chord.name, chord)
     setattr(sys.modules[__name__], 'CHORDS', chords)
 
 __setup()
@@ -133,6 +127,8 @@ def get_chords_by_intervals(intervals):
 
 
 if __name__ == '__main__':
+    print('CHORDS: {}'.format(CHORDS))
+    print(Gmaj)
     print('CHORD_CLASSES: {}'.format(CHORD_CLASSES))
     print('dir(sys.modules[__name__]):')
     print(dir(sys.modules[__name__]))

@@ -8,7 +8,7 @@ class Key:
     def __init__(self, root, scale):
         self.root = root
         self.scale = scale
-        self.name = '{} {}'.format(self.root, self.scale.name)
+        self.name = '{} {}'.format(self.root.name, self.scale.name)
         self.root_idx = NOTES.index(self.root)
         self.notes = [self.root]
         # Initialize notes
@@ -18,7 +18,11 @@ class Key:
             self.notes.append(note)
 
     def __str__(self):
-        return '{}: {}'.format(self.name, self.notes)
+        note_names = ', '.join([note.name for note in self.notes])
+        return '{}: {}'.format(self.name, note_names)
+
+    def __repr__(self):
+        return self.__str__()
 
 
 def estimate_key(notes, min_found=0.8, min_score=0.8):
@@ -46,8 +50,9 @@ def estimate_key(notes, min_found=0.8, min_score=0.8):
             possibilities.append((key, d, score))
     # Sort possibilities by highest match
     possibilities = sorted(possibilities, key=lambda x: x[2], reverse=True)
-    print('Possible keys: notes={} found>={:.2f}% score>={:.2f}%'.format(
-            notes, min_found*100, min_score*100))
+    note_names = ', '.join([note.name for note in notes])
+    print('Possible keys: notes=[{}] found>={:.2f}% score>={:.2f}%'.format(
+            note_names, min_found*100, min_score*100))
     for key, stats, score in possibilities:
         print('{0}: score={2:.2f}'.format(key, stats, score))
 
@@ -58,7 +63,7 @@ def __setup():
         for name, scale in SCALES.items():
             key = Key(root, scale)
             keys[(root, scale.name)] = key
-            attr_name = '{}{}'.format(root, scale.name).replace(' ', '')
+            attr_name = '{}{}'.format(root.name, scale.name).replace(' ', '')
             setattr(sys.modules[__name__], attr_name, key)
     setattr(sys.modules[__name__], 'KEYS', keys)
 
@@ -67,4 +72,6 @@ __setup()
 
 
 if __name__ == '__main__':
-    print(KEYS)
+    print(GMajor)
+    for key in KEYS.values():
+        print(key)
