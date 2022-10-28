@@ -1,4 +1,15 @@
+import musicpy
+import musicpy.note
+print('Initalizing notes')
+musicpy.note.init_notes()
 from musicpy.note import C, CzDb, D, DzEb, E, F, FzGb, G, GzAb, A, AzBb, B
+# Init notes will take a little while
+print('Initalizing tones (octaves 3-4) -- this might take a little while')
+musicpy.note.init_tones(3, 4)
+# Import notes which happen to be in GMajor scale, 3rd and 5th octaves
+from musicpy.note import (G3, A3, B3, C3, D3, E3, FzGb3, G4, A4, B4, C4, D4, E4,
+    FzGb4)
+
 from musicpy.note import NOTES
 from musicpy import chord, key, scale
 from musicpy.key import Key, estimate_key
@@ -14,6 +25,24 @@ if __name__ == '__main__':
     print(NOTES)
     print(C)
     print(CzDb)
+
+    print('\nTones')
+    default_duration = 'eighth'
+    melody = [E3, FzGb3, G3, B3, (A3, 'quarter'), (B3, 'quarter'), A3, B3, C4,
+        D4, C4, (B3, 'whole')]
+    print(melody)
+    print('Press [CTRL]+C to stop melody')
+    try:
+        while True:
+            for tone in melody:
+                if isinstance(tone, musicpy.note.Tone):
+                    tone.play(default_duration)
+                elif isinstance(tone, tuple):
+                    tone, duration = tone
+                    tone.play(duration)
+    except KeyboardInterrupt as e:
+        pass
+
 
     print('\nChords')
     g_major = chord.Major(G) # can also use chord.Gmaj
