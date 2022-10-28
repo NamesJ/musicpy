@@ -1,1 +1,1 @@
-NOTES = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B']
+NOTES = ['C', 'CzDb', 'D', 'DzEb', 'E', 'F', 'FzGb', 'G', 'GzAb', 'A', 'AzBb', 'B']

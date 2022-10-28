@@ -7,6 +7,11 @@ from musicpy.chord import Gmaj, Emin, Amin, Bmaj
 
 
 if __name__ == '__main__':
+    # Because '#' is not a valid character for object names in Python,
+    # the 'z' character is used in it's place.
+    print('\nNotes')
+    print(NOTES)
+
     print('\nChords')
     g_major = chord.Major('G') # can also use chord.Gmaj
     print(g_major)
