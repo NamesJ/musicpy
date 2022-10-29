@@ -1,16 +1,15 @@
+import math
 import sys
 import os
-import pygame
+import pyaudio
 import numpy as np
-import pickle
 
 SAMPLE_RATE = 44100
 DEFAULT_BPM = 120
-pygame.mixer.init(SAMPLE_RATE, -16, 2, 512)
-
 NOTE_NAMES = ['C', 'CzDb', 'D', 'DzEb', 'E', 'F', 'FzGb', 'G', 'GzAb', 'A', 'AzBb', 'B']
 TUNING_FREQUENCY = 440 # hertz
 ALL_FREQUENCIES = [TUNING_FREQUENCY*2**(n/12) for n in range(-57, 50)]
+STREAM = None
 
 
 class Tone:
@@ -42,12 +41,15 @@ class Tone:
         self.triplet_sixteenth = self._gen_sound(self.triplet_sixteenth_duration)
 
     def _gen_sound(self, duration=1):
-        s = int(SAMPLE_RATE * duration)
-        part = lambda x : 4096 * np.sin(2*np.pi*self.freq*x/SAMPLE_RATE)
-        arr = np.array([part(x) for x in range(s)]).astype(np.int16)
-        arr2 = np.c_[arr, arr]
-        sound = pygame.sndarray.make_sound(arr2)
-        return sound
+        frames = int(SAMPLE_RATE * duration)
+        #s = int(SAMPLE_RATE * duration)
+        #part = lambda x : 4096 * np.sin(2*np.pi*self.freq*x/SAMPLE_RATE)
+        #arr = np.array([part(x) for x in range(s)]).astype(np.float32).tostring()
+        #sound = np.c_[arr, arr]
+        samples = np.sin(2*self.freq*np.pi*np.arange(frames*2)/SAMPLE_RATE)
+        fade_out = np.linspace(1, 0, len(samples))
+        sound = samples * fade_out
+        return sound.astype(np.float32).tostring()
 
     def play(self, duration):
         if isinstance(duration, str):
@@ -58,11 +60,8 @@ class Tone:
         else:
             raise Exception('Must provide either duration as note length name \
 or duration in seconds')
-        sound.play(-1)
         delay = int(duration*1000)
-        pygame.mixer.fadeout(delay)
-        pygame.time.delay(delay)
-        sound.stop()
+        STREAM.write(sound)
 
     def __str__(self):
         return '{}: {}Hz @ {}bpm'.format(self.name, self.freq, self.bpm)
@@ -120,7 +119,6 @@ def init_tones(min_octave=0, max_octave=7):
     setattr(sys.modules[__name__], 'TONES', tones)
 
 
-
 def init_notes():
     # Generate note subclass singletons via note_factory and add them as
     # attributes to the module
@@ -134,11 +132,33 @@ def init_notes():
     setattr(sys.modules[__name__], 'NOTES', notes)
 
 
+def init_stream():
+    p = pyaudio.PyAudio()
+    stream = p.open(format = pyaudio.paFloat32,
+            frames_per_buffer=1024,
+            channels = 2,
+            rate = SAMPLE_RATE,
+            output = True)
+    stream.p = p
+    setattr(sys.modules[__name__], 'STREAM', stream)
+
+
+def close_stream():
+    STREAM.stop_stream()
+    STREAM.close()
+    STREAM.p.terminate()
+
+
+def _setup():
+    init_notes()
+
+
+_setup()
+
 
 if __name__ == '__main__':
-    # Initalize note attributes (C, CzDb, ..., B)
-    init_notes()
     # Initalize tone attributes for each of the notes (C0, C1, ..., B7, B8)
+    init_stream()
     init_tones()
     print(C)
     print(AzBb)

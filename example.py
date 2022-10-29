@@ -1,11 +1,13 @@
+import time
 import musicpy
 import musicpy.note
-print('Initalizing notes')
-musicpy.note.init_notes()
 from musicpy.note import C, CzDb, D, DzEb, E, F, FzGb, G, GzAb, A, AzBb, B
 # Init notes will take a little while
 print('Initalizing tones (octaves 3-4) -- this might take a little while')
+musicpy.note.init_stream()
 musicpy.note.init_tones(3, 4)
+#musicpy.note.init_mixer()
+#musicpy.note.init_tones(3, 4)
 # Import notes which happen to be in GMajor scale, 3rd and 5th octaves
 from musicpy.note import (G3, A3, B3, C3, D3, E3, FzGb3, G4, A4, B4, C4, D4, E4,
     FzGb4)
@@ -19,17 +21,10 @@ from musicpy.chord import Gmaj, Emin, Amin, Bmaj
 
 
 if __name__ == '__main__':
-    # Because '#' is not a valid character for object names in Python,
-    # the 'z' character is used in it's place.
-    print('\nNotes')
-    print(NOTES)
-    print(C)
-    print(CzDb)
-
     print('\nTones')
     default_duration = 'eighth'
     melody = [E3, FzGb3, G3, B3, (A3, 'quarter'), (B3, 'quarter'), A3, B3, C4,
-        D4, C4, (B3, 'whole')]
+        D4, (C4, 'eighth'), (B3, 'half')]
     print(melody)
     print('Press [CTRL]+C to stop melody')
     try:
@@ -40,6 +35,30 @@ if __name__ == '__main__':
                 elif isinstance(tone, tuple):
                     tone, duration = tone
                     tone.play(duration)
+            time.sleep(0.5)
+    except KeyboardInterrupt as e:
+        pass
+
+    # Because '#' is not a valid character for object names in Python,
+    # the 'z' character is used in it's place.
+    print('\nNotes')
+    print(NOTES)
+    print(C)
+    print(CzDb)
+    # Play notes of Gmaj chord
+    #for note in Gmaj.notes:
+    #    note.play(120, 'half', 4)
+    print('Gmaj notes: {}'.format(Gmaj.notes))
+    #G.play(120, 'half', 4)
+    #A.play(120, 'half', 4)
+    #D.play(120, 'half', 4)
+    print('Press [CTRL]+C to stop melody')
+    try:
+        while True:
+            G3.play('sixteenth')
+            A4.play('sixteenth')
+            D4.play('sixteenth')
+            A4.play('sixteenth')
     except KeyboardInterrupt as e:
         pass
 
@@ -87,3 +106,5 @@ if __name__ == '__main__':
         print('{}: {}'.format(c.name_suffix, c.intervals))
     print('Chords containing the intervals: [7]')
     print(','.join([c.name_suffix for c in chord.get_chords_by_intervals([7])]))
+
+    musicpy.note.close_stream()
